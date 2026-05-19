@@ -1,0 +1,42 @@
+<svg width="52" height="52" viewBox="-2 -2 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#aa367c"/>
+      <stop offset="1" stop-color="#4a2fbd"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#aa367c" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#4a2fbd" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Dark background -->
+  <rect width="52" height="52" x="-2" y="-2" rx="10" fill="#121212"/>
+
+  <!-- Background glow -->
+  <polygon points="26,2 47,14 47,38 26,50 5,38 5,14" fill="url(#glow)"/>
+
+  <!-- Outer hexagon -->
+  <polygon points="26,2 47,14 47,38 26,50 5,38 5,14" stroke="url(#g)" stroke-width="1.5"/>
+
+  <!-- Inner dashed hexagon -->
+  <polygon points="26,9 41,18 41,34 26,43 11,34 11,18" stroke="url(#g)" stroke-width="0.7" stroke-dasharray="3 2.5" opacity="0.4"/>
+
+  <!-- Letter A - left leg -->
+  <line x1="13" y1="42" x2="26" y2="11" stroke="url(#g)" stroke-width="2.8" stroke-linecap="round"/>
+  <!-- Letter A - right leg -->
+  <line x1="39" y1="42" x2="26" y2="11" stroke="url(#g)" stroke-width="2.8" stroke-linecap="round"/>
+  <!-- Letter A - crossbar -->
+  <line x1="17.8" y1="31" x2="34.2" y2="31" stroke="url(#g)" stroke-width="2.2" stroke-linecap="round"/>
+
+  <!-- Apex dot -->
+  <circle cx="26" cy="11" r="2.2" fill="url(#g)"/>
+
+  <!-- Corner dots -->
+  <circle cx="26" cy="2"  r="1.4" fill="url(#g)" opacity="0.55"/>
+  <circle cx="47" cy="14" r="1.4" fill="url(#g)" opacity="0.55"/>
+  <circle cx="47" cy="38" r="1.4" fill="url(#g)" opacity="0.55"/>
+  <circle cx="26" cy="50" r="1.4" fill="url(#g)" opacity="0.55"/>
+  <circle cx="5"  cy="38" r="1.4" fill="url(#g)" opacity="0.55"/>
+  <circle cx="5"  cy="14" r="1.4" fill="url(#g)" opacity="0.55"/>
+</svg>
