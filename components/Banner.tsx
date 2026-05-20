@@ -2,8 +2,8 @@
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 
-const SolarSystem      = dynamic(() => import('./SolarSystem'),                       { ssr: false });
-const ShaderBackground = dynamic(() => import('@/components/ui/shader-background'),   { ssr: false });
+const SolarSystem      = dynamic(() => import('@/components/SolarSystem'),             { ssr: false });
+const ShaderBackground = dynamic(() => import('@/components/ui/shader-background'),    { ssr: false });
 
 const ROLES = ['Blockchain Enthusiast', 'QA Engineer', 'Web Developer', 'Tech Explorer'];
 
@@ -33,29 +33,22 @@ function useTypewriter(words: string[], speed = 90, pause = 1600) {
   return text;
 }
 
-export default function CloneBanner() {
+export default function Banner() {
   const role = useTypewriter(ROLES);
 
   return (
     <section
       id="home"
-      style={{
-        padding: '260px 0 100px',
-        position: 'relative',
-        overflow: 'hidden',
-      }}
+      style={{ padding: '260px 0 100px', position: 'relative', overflow: 'hidden' }}
     >
-      {/* Layer 0 – WebGL plasma shader */}
       <div className="absolute inset-0" style={{ zIndex: 0 }}>
         <ShaderBackground />
       </div>
 
-      {/* Layer 1 – Solar system (transparent canvas) */}
       <div className="absolute inset-0" style={{ zIndex: 1 }}>
         <SolarSystem />
       </div>
 
-      {/* Layer 2 – left-to-right veil so text is readable */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -64,16 +57,9 @@ export default function CloneBanner() {
         }}
       />
 
-      {/* Layer 3 – content */}
-      <div
-        className="relative w-full px-6"
-        style={{ zIndex: 3, maxWidth: 1140, margin: '0 auto' }}
-      >
+      <div className="relative w-full px-6" style={{ zIndex: 3, maxWidth: 1140, margin: '0 auto' }}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-
-          {/* ── Left: text ──────────────────────────────────────────────── */}
           <div>
-            {/* Tagline */}
             <div
               className="inline-block font-bold tracking-[0.8px] mb-4"
               style={{
@@ -108,10 +94,7 @@ export default function CloneBanner() {
               }}
             >
               {role}
-              <span
-                className="cursor-blink"
-                style={{ WebkitTextFillColor: 'white', color: 'white' }}
-              >|</span>
+              <span className="cursor-blink" style={{ WebkitTextFillColor: 'white', color: 'white' }}>|</span>
             </h2>
 
             <p style={{ color: '#b8b8b8', fontSize: 18, letterSpacing: '0.8px', lineHeight: '1.5em', width: '96%' }}>
@@ -126,7 +109,7 @@ export default function CloneBanner() {
               Let&apos;s Connect
               <svg
                 className="group-hover:ml-6 transition-all duration-300"
-                style={{ marginLeft: 10, fontSize: 25 }}
+                style={{ marginLeft: 10 }}
                 width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
               >
                 <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -134,9 +117,7 @@ export default function CloneBanner() {
             </a>
           </div>
 
-          {/* ── Right: empty – solar system visible through ────────────── */}
           <div className="hidden lg:block" />
-
         </div>
       </div>
     </section>

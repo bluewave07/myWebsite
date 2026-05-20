@@ -1,157 +1,87 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
 
-const skills = [
-  { label: 'Quality Assurance', percent: 95 },
-  { label: 'Development', percent: 80 },
-  { label: 'Blockchain', percent: 90 },
-  { label: 'Testing Tools', percent: 88 },
-  { label: 'DevOps', percent: 72 },
+// Tech stack items – replacing the original Owl Carousel images
+const STACK = [
+  { name: 'React',      color: '#61DAFB' },
+  { name: 'TypeScript', color: '#3178C6' },
+  { name: 'Node.js',    color: '#68A063' },
+  { name: 'Python',     color: '#F7CA3E' },
+  { name: 'Solidity',   color: '#A8B9CC' },
+  { name: 'Ethereum',   color: '#9B86FF' },
+  { name: 'Docker',     color: '#2496ED' },
+  { name: 'AWS',        color: '#FF9900' },
+  { name: 'Jest',       color: '#C21325' },
+  { name: 'Cypress',    color: '#17202C' },
+  { name: 'Selenium',   color: '#43B02A' },
+  { name: 'Postman',    color: '#FF6C37' },
 ];
 
-const RADIUS = 70;
-const STROKE = 8;
-const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
+// Duplicate for seamless marquee loop
+const ROW = [...STACK, ...STACK];
 
-function CircularProgress({ percent, label, animate }: { percent: number; label: string; animate: boolean }) {
-  const [current, setCurrent] = useState(0);
-
-  useEffect(() => {
-    if (!animate) return;
-    let start: number | null = null;
-    const duration = 1200;
-    const step = (ts: number) => {
-      if (!start) start = ts;
-      const progress = Math.min((ts - start) / duration, 1);
-      setCurrent(Math.round(percent * progress));
-      if (progress < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  }, [animate, percent]);
-
-  const offset = CIRCUMFERENCE - (current / 100) * CIRCUMFERENCE;
-
+function SkillItem({ name, color }: { name: string; color: string }) {
   return (
-    <div className="flex flex-col items-center gap-4">
-      <div className="relative" style={{ width: RADIUS * 2 + 20, height: RADIUS * 2 + 20 }}>
-        <svg width={RADIUS * 2 + 20} height={RADIUS * 2 + 20}>
-          <defs>
-            <linearGradient id={`grad-${label}`} x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#7b2ff7" />
-              <stop offset="100%" stopColor="#f107a3" />
-            </linearGradient>
-          </defs>
-          {/* Track */}
-          <circle
-            cx={RADIUS + 10}
-            cy={RADIUS + 10}
-            r={RADIUS}
-            fill="none"
-            stroke="rgba(255,255,255,0.08)"
-            strokeWidth={STROKE}
-          />
-          {/* Progress */}
-          <circle
-            cx={RADIUS + 10}
-            cy={RADIUS + 10}
-            r={RADIUS}
-            fill="none"
-            stroke={`url(#grad-${label})`}
-            strokeWidth={STROKE}
-            strokeLinecap="round"
-            strokeDasharray={CIRCUMFERENCE}
-            strokeDashoffset={offset}
-            transform={`rotate(-90 ${RADIUS + 10} ${RADIUS + 10})`}
-            style={{ transition: 'stroke-dashoffset 0.05s linear' }}
-          />
-        </svg>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-2xl font-bold text-white">{current}%</span>
-        </div>
+    <div
+      className="flex-shrink-0 flex flex-col items-center gap-3"
+      style={{ width: 120, padding: '0 20px' }}
+    >
+      <div
+        className="rounded-full flex items-center justify-center font-bold text-white text-[11px] tracking-[0.8px]"
+        style={{
+          width: 68, height: 68,
+          background: `radial-gradient(circle at 35% 35%, ${color}44, ${color}22)`,
+          border: `2px solid ${color}66`,
+          color,
+        }}
+      >
+        {name.slice(0, 2).toUpperCase()}
       </div>
-      <span className="text-white/70 text-sm font-medium text-center">{label}</span>
+      <span className="text-white text-[13px] tracking-[0.8px] text-center">{name}</span>
     </div>
   );
 }
 
-export default function Skills() {
-  const ref = useRef<HTMLElement>(null);
-  const [visible, setVisible] = useState(false);
-  const [active, setActive] = useState(1);
-
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) setVisible(true); },
-      { threshold: 0.2 }
-    );
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, []);
-
-  const prev = () => setActive(a => (a - 1 + skills.length) % skills.length);
-  const next = () => setActive(a => (a + 1) % skills.length);
-
-  const visibleSkills = [
-    skills[(active - 1 + skills.length) % skills.length],
-    skills[active],
-    skills[(active + 1) % skills.length],
-  ];
-
+export default function CloneSkills() {
   return (
-    <section
-      id="skills"
-      ref={ref}
-      className="relative py-28 overflow-hidden"
-    >
-      {/* Gradient fade top */}
-      <div
-        className="absolute inset-x-0 top-0 h-40 pointer-events-none"
-        style={{ background: 'linear-gradient(to bottom, rgba(123,47,247,0.15), transparent)' }}
-      />
+    <section id="skills" style={{ padding: '0 0 50px', position: 'relative' }}>
+      <div style={{ maxWidth: 1140, margin: '0 auto', padding: '0 24px' }}>
+        <div
+          style={{
+            background: '#151515',
+            borderRadius: 64,
+            marginTop: -60,
+            padding: '60px 50px',
+            textAlign: 'center',
+          }}
+        >
+          <h2 className="text-white font-bold" style={{ fontSize: 45 }}>Skills</h2>
+          <p style={{ color: '#b8b8b8', fontSize: 18, letterSpacing: '0.8px', lineHeight: '1.5em', margin: '14px 0 75px' }}>
+            Technology fancier &amp; Quality assurance provider &amp; Blockchain enthusiast.<br />
+            Technical and analytical skills
+          </p>
 
-      <div
-        className="max-w-5xl mx-auto px-6 text-center"
-        style={{
-          opacity: visible ? 1 : 0,
-          transform: visible ? 'none' : 'translateY(30px)',
-          transition: 'opacity 0.7s ease, transform 0.7s ease',
-        }}
-      >
-        <h2 className="text-4xl font-bold mb-4">Skills</h2>
-        <p className="text-white/50 text-sm mb-16 max-w-lg mx-auto">
-          Technology fancier &amp; Quality assurance provider &amp; Blockchain enthusiast.<br />
-          Technical and analytical skills
-        </p>
+          {/* Marquee */}
+          <div style={{ width: '80%', margin: '0 auto', position: 'relative', overflow: 'hidden' }}>
+            {/* Fade edges */}
+            <div
+              className="absolute inset-y-0 left-0 pointer-events-none"
+              style={{ width: 80, background: 'linear-gradient(90deg, #151515, transparent)', zIndex: 2 }}
+            />
+            <div
+              className="absolute inset-y-0 right-0 pointer-events-none"
+              style={{ width: 80, background: 'linear-gradient(270deg, #151515, transparent)', zIndex: 2 }}
+            />
 
-        <div className="relative flex items-center justify-center gap-12">
-          <button
-            onClick={prev}
-            className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/60 transition-colors flex-shrink-0"
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M15 18l-6-6 6-6"/></svg>
-          </button>
-
-          <div className="flex items-center gap-10 sm:gap-16">
-            {visibleSkills.map((s, i) => (
-              <div
-                key={s.label}
-                style={{
-                  opacity: i === 1 ? 1 : 0.45,
-                  transform: i === 1 ? 'scale(1.15)' : 'scale(0.88)',
-                  transition: 'opacity 0.3s, transform 0.3s',
-                }}
-              >
-                <CircularProgress percent={s.percent} label={s.label} animate={visible} />
-              </div>
-            ))}
+            <div
+              className="flex"
+              style={{ animation: 'marquee-scroll 22s linear infinite', width: 'max-content' }}
+            >
+              {ROW.map((s, i) => (
+                <SkillItem key={`${s.name}-${i}`} name={s.name} color={s.color} />
+              ))}
+            </div>
           </div>
 
-          <button
-            onClick={next}
-            className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/60 transition-colors flex-shrink-0"
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M9 18l6-6-6-6"/></svg>
-          </button>
         </div>
       </div>
     </section>

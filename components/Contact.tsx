@@ -1,105 +1,165 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-export default function Contact() {
-  const ref = useRef<HTMLElement>(null);
-  const [visible, setVisible] = useState(false);
+type Status = 'idle' | 'sending' | 'success' | 'error';
 
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) setVisible(true); },
-      { threshold: 0.1 }
-    );
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, []);
+export default function CloneContact() {
+  const [status, setStatus] = useState<Status>('idle');
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setStatus('sending');
+    const form = e.currentTarget;
+    try {
+      const res = await fetch('https://formspree.io/f/mgoqawrg', {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' },
+      });
+      if (res.ok) {
+        setStatus('success');
+        form.reset();
+      } else {
+        setStatus('error');
+      }
+    } catch {
+      setStatus('error');
+    }
+  }
 
   return (
     <section
       id="contact"
-      ref={ref}
-      className="relative overflow-hidden py-24"
-      style={{ background: 'linear-gradient(135deg, #4a1272 0%, #7b2ff7 35%, #c026d3 65%, #f107a3 100%)' }}
+      style={{
+        background: 'linear-gradient(90.21deg, #aa367c -5.91%, #4a2fbd 111.58%)',
+        padding: '60px 0 80px',
+      }}
     >
-      <div
-        className="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
-        style={{
-          opacity: visible ? 1 : 0,
-          transform: visible ? 'none' : 'translateY(30px)',
-          transition: 'opacity 0.7s ease, transform 0.7s ease',
-        }}
+      <div style={{ maxWidth: 1140, margin: '0 auto', padding: '0 24px' }}
+        className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
       >
-        {/* Photo placeholder */}
+        {/* Photo card */}
         <div className="flex justify-center lg:justify-start">
           <div
-            className="relative rounded-3xl overflow-hidden"
-            style={{ width: 320, height: 380, background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)' }}
+            style={{
+              width: '92%',
+              maxWidth: 400,
+              height: 460,
+              border: '1px solid rgba(255,255,255,0.25)',
+              borderRadius: 30,
+              overflow: 'hidden',
+              position: 'relative',
+            }}
           >
-            <div
-              className="absolute inset-0"
-              style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.3) 100%)' }}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/profile.jpg"
+              alt="Abdulkadir Akyurt"
+              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 12%', display: 'block' }}
             />
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
-              <div
-                className="w-20 h-20 rounded-full flex items-center justify-center text-3xl font-bold text-white"
-                style={{ background: 'rgba(255,255,255,0.2)' }}
-              >
-                AA
-              </div>
-              <p className="text-white font-semibold text-lg">Abdulkadir Akyurt</p>
-              <p className="text-white/70 text-sm">QA Engineer</p>
+            <div
+              style={{
+                position: 'absolute', bottom: 0, left: 0, right: 0, height: '42%',
+                background: 'linear-gradient(to top, rgba(74,47,189,0.95) 0%, rgba(170,54,124,0.7) 60%, transparent 100%)',
+              }}
+            />
+            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '24px 28px', textAlign: 'center' }}>
+              <p className="text-white font-bold" style={{ fontSize: 20, letterSpacing: '0.8px', marginBottom: 4 }}>
+                Abdulkadir Akyurt
+              </p>
+              <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: 14, letterSpacing: '1px' }}>
+                QA Engineer · Blockchain Enthusiast
+              </p>
             </div>
           </div>
         </div>
 
         {/* Form */}
         <div>
-          <h2 className="text-4xl font-bold text-white mb-8">Get In Touch</h2>
-          <form className="flex flex-col gap-4" onSubmit={e => e.preventDefault()}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <h2 className="text-white font-bold tracking-[0.8px]" style={{ fontSize: 45, marginBottom: 30 }}>
+            Get In Touch
+          </h2>
+
+          <form className="flex flex-col" onSubmit={handleSubmit}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2">
               <input
-                type="text"
-                placeholder="First Name"
-                className="rounded-2xl px-5 py-4 text-white placeholder-white/50 text-sm outline-none focus:outline-none"
-                style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)', backdropFilter: 'blur(8px)' }}
+                name="firstName" type="text" placeholder="First Name" required
+                className="contact-input" style={inputStyle}
               />
               <input
-                type="text"
-                placeholder="Last Name"
-                className="rounded-2xl px-5 py-4 text-white placeholder-white/50 text-sm outline-none"
-                style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)', backdropFilter: 'blur(8px)' }}
+                name="lastName" type="text" placeholder="Last Name" required
+                className="contact-input" style={inputStyle}
               />
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2">
               <input
-                type="email"
-                placeholder="Email Address"
-                className="rounded-2xl px-5 py-4 text-white placeholder-white/50 text-sm outline-none"
-                style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)', backdropFilter: 'blur(8px)' }}
+                name="email" type="email" placeholder="Email Address" required
+                className="contact-input" style={inputStyle}
               />
               <input
-                type="tel"
-                placeholder="Phone No."
-                className="rounded-2xl px-5 py-4 text-white placeholder-white/50 text-sm outline-none"
-                style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)', backdropFilter: 'blur(8px)' }}
+                name="phone" type="tel" placeholder="Phone No."
+                className="contact-input" style={inputStyle}
               />
             </div>
             <textarea
-              rows={4}
-              placeholder="Message"
-              className="rounded-2xl px-5 py-4 text-white placeholder-white/50 text-sm outline-none resize-none"
-              style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)', backdropFilter: 'blur(8px)' }}
+              name="message" rows={6} placeholder="Message" required
+              className="contact-input"
+              style={{ ...inputStyle, resize: 'none', marginBottom: 0 }}
             />
-            <button
-              type="submit"
-              className="self-start mt-2 px-8 py-3 rounded-xl text-white font-semibold text-sm hover:opacity-90 transition-opacity"
-              style={{ background: 'rgba(255,255,255,0.2)', border: '1px solid rgba(255,255,255,0.4)', backdropFilter: 'blur(8px)' }}
-            >
-              Send Message
-            </button>
+
+            <div style={{ marginTop: 25, display: 'flex', alignItems: 'center', gap: 20 }}>
+              <button
+                type="submit"
+                disabled={status === 'sending'}
+                className="contact-btn group"
+                style={{
+                  background: '#fff',
+                  color: '#000',
+                  border: 'none',
+                  fontSize: 18,
+                  fontWeight: 700,
+                  padding: '14px 48px',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  cursor: status === 'sending' ? 'not-allowed' : 'pointer',
+                  letterSpacing: '0.8px',
+                  transition: '0.3s ease-in-out',
+                  opacity: status === 'sending' ? 0.7 : 1,
+                }}
+              >
+                <span style={{ position: 'relative', zIndex: 1 }}>
+                  {status === 'sending' ? 'Sending...' : 'Send It'}
+                </span>
+              </button>
+
+              {status === 'success' && (
+                <p style={{ color: '#fff', fontSize: 15, fontWeight: 600, letterSpacing: '0.5px' }}>
+                  ✓ Message sent! I&apos;ll get back to you soon.
+                </p>
+              )}
+              {status === 'error' && (
+                <p style={{ color: '#ffcccc', fontSize: 15, fontWeight: 600 }}>
+                  ✗ Something went wrong. Please try again.
+                </p>
+              )}
+            </div>
           </form>
         </div>
       </div>
     </section>
   );
 }
+
+const inputStyle: React.CSSProperties = {
+  background: 'rgba(255,255,255,0.1)',
+  border: '1px solid rgba(255,255,255,0.5)',
+  borderRadius: 20,
+  color: '#fff',
+  fontSize: 18,
+  fontWeight: 500,
+  letterSpacing: '0.8px',
+  padding: '18px 26px',
+  width: '100%',
+  transition: '0.3s ease-in-out',
+  marginBottom: 8,
+};

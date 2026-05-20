@@ -1,9 +1,9 @@
-import CloneNavbar from '@/components/Clone/CloneNavbar';
-import CloneBanner from '@/components/Clone/CloneBanner';
-import CloneSkills from '@/components/Clone/CloneSkills';
-import CloneProjects from '@/components/Clone/CloneProjects';
-import CloneContact from '@/components/Clone/CloneContact';
-import CloneFooter from '@/components/Clone/CloneFooter';
+import Navbar from '@/components/Navbar';
+import Banner from '@/components/Banner';
+import Skills from '@/components/Skills';
+import Projects from '@/components/Projects';
+import Contact from '@/components/Contact';
+import Footer from '@/components/Footer';
 
 export const metadata = {
   title: 'Abdulkadir Akyurt — Portfolio',
@@ -13,12 +13,12 @@ export const metadata = {
 export default function Home() {
   return (
     <main style={{ background: '#121212', minHeight: '100vh', fontFamily: "var(--font-karla), 'Karla', sans-serif" }}>
-      <CloneNavbar />
-      <CloneBanner />
-      <CloneSkills />
-      <CloneProjects />
-      <CloneContact />
-      <CloneFooter />
+      <Navbar />
+      <Banner />
+      <Skills />
+      <Projects />
+      <Contact />
+      <Footer />
     </main>
   );
 }
