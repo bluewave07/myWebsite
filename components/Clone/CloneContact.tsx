@@ -32,7 +32,7 @@ export default function CloneContact() {
       id="contact"
       style={{
         background: 'linear-gradient(90.21deg, #aa367c -5.91%, #4a2fbd 111.58%)',
-        padding: '60px 0 200px',
+        padding: '60px 0 80px',
       }}
     >
       <div style={{ maxWidth: 1140, margin: '0 auto', padding: '0 24px' }}
