@@ -25,7 +25,18 @@ export default async function ArticlePage({
       }}
     >
       <Navbar />
-      <div className="max-w-2xl mx-auto px-6 pt-32 pb-16">
+
+      {article.imageUrl && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={article.imageUrl}
+          alt={article.title}
+          className="w-full object-cover"
+          style={{ height: 360, marginTop: 64 }}
+        />
+      )}
+
+      <div className="max-w-2xl mx-auto px-6 pt-10 pb-16">
         <div className="flex items-center gap-3 mb-4 text-sm text-zinc-500">
           <a href="/blog" className="hover:text-zinc-300 transition-colors">
             ← Blog
@@ -60,6 +71,26 @@ export default async function ArticlePage({
 
         <div className="prose prose-invert prose-zinc max-w-none">
           <ReactMarkdown>{article.content}</ReactMarkdown>
+        </div>
+
+        <div className="mt-16 pt-8 border-t border-zinc-800 flex items-center gap-4">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+            AA
+          </div>
+          <div>
+            <p className="text-zinc-100 font-semibold">Abdulkadir Akyurt</p>
+            <p className="text-zinc-500 text-sm">
+              QA Engineer & Test Automation Specialist ·{' '}
+              <a
+                href="https://mywebsite279.netlify.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-zinc-300 transition-colors"
+              >
+                mywebsite279.netlify.app
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </main>

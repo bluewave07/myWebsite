@@ -11,6 +11,7 @@ export interface Article {
   mediumUrl: string
   excerpt: string
   content: string
+  imageUrl?: string
 }
 
 export function getAllArticles(): Article[] {
