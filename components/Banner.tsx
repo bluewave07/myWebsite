@@ -1,11 +1,9 @@
 'use client';
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { Spotlight } from '@/components/ui/spotlight';
 
-const SolarSystem      = dynamic(() => import('@/components/SolarSystem'),             { ssr: false });
-const ShaderBackground = dynamic(() => import('@/components/ui/shader-background'),    { ssr: false });
-const SplineScene      = dynamic(() => import('@/components/ui/splite').then(m => ({ default: m.SplineScene })), { ssr: false });
+const SolarSystem = dynamic(() => import('@/components/SolarSystem'), { ssr: false });
+const SplineScene = dynamic(() => import('@/components/ui/splite').then(m => ({ default: m.SplineScene })), { ssr: false });
 
 const ROLES = ['Blockchain Enthusiast', 'QA Engineer', 'Web Developer', 'Tech Explorer'];
 
@@ -43,11 +41,16 @@ export default function Banner() {
       id="home"
       style={{ padding: '260px 0 100px', position: 'relative', overflow: 'hidden' }}
     >
+      {/* Spline 3D — full background, receives mouse events */}
       <div className="absolute inset-0" style={{ zIndex: 0 }}>
-        <ShaderBackground />
+        <SplineScene
+          scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+          className="w-full h-full"
+        />
       </div>
 
-      <div className="absolute inset-0" style={{ zIndex: 1 }}>
+      {/* Solar system — on top, pointer-events none so mouse reaches Spline */}
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 1 }}>
         <SolarSystem />
       </div>
 
@@ -119,13 +122,7 @@ export default function Banner() {
             </a>
           </div>
 
-          <div className="hidden lg:flex items-center justify-center" style={{ height: 500, position: 'relative' }}>
-            <Spotlight className="-top-40 left-0 md:left-20 md:-top-20" fill="white" />
-            <SplineScene
-              scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-              className="w-full h-full"
-            />
-          </div>
+          <div className="hidden lg:block" />
         </div>
       </div>
     </section>
