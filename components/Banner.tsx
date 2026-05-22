@@ -70,7 +70,7 @@ export default function Banner() {
 
       {/* Layer 1 — Spline 3D robot, pushed to far right, screen-blend so black = transparent */}
       <div
-        className="absolute pointer-events-none"
+        className="absolute"
         style={{
           top: 0, bottom: 0,
           right: '-5%', width: '55%',
@@ -93,14 +93,14 @@ export default function Banner() {
       <motion.div
         className="absolute pointer-events-none"
         style={{
-          width: 520,
-          height: 520,
+          width: 600,
+          height: 600,
           x: mouseX,
           y: mouseY,
           translateX: '-50%',
           translateY: '-50%',
-          background: 'radial-gradient(circle, rgba(255,255,255,0.13) 0%, rgba(255,255,255,0.04) 40%, transparent 70%)',
-          filter: 'blur(6px)',
+          background: 'radial-gradient(circle, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.18) 35%, rgba(255,255,255,0.05) 60%, transparent 75%)',
+          filter: 'blur(4px)',
           zIndex: 3,
         }}
       />
@@ -114,8 +114,8 @@ export default function Banner() {
         }}
       />
 
-      {/* Layer 5 — text */}
-      <div className="relative w-full px-6" style={{ zIndex: 5, maxWidth: 1140, margin: '0 auto' }}>
+      {/* Layer 5 — text (pointer-events-none on wrapper; re-enabled on interactive elements) */}
+      <div className="relative w-full px-6 pointer-events-none" style={{ zIndex: 5, maxWidth: 1140, margin: '0 auto' }}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
             <div
@@ -162,7 +162,7 @@ export default function Banner() {
             <a
               href="#contact"
               className="inline-flex items-center text-white font-bold group"
-              style={{ fontSize: 20, letterSpacing: '0.8px', marginTop: 60 }}
+              style={{ fontSize: 20, letterSpacing: '0.8px', marginTop: 60, pointerEvents: 'auto' }}
             >
               Let&apos;s Connect
               <svg
