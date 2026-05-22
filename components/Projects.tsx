@@ -55,31 +55,45 @@ const LEGACY: Array<{ title: string; date: string; img: string; url: string; exc
   },
 ]
 
+interface FlowStep {
+  step: string
+  label: string
+}
+
 interface ProjectItem {
   title: string
   tag: string
-  desc: string
+  img: string
+  flow: FlowStep[]
   tech: string[]
-  bg: string
-  url?: string
 }
 
 const PROJECTS: ProjectItem[] = [
   {
     title: 'Medium Bot',
     tag: 'AI · Automation',
-    desc: 'AI-powered content pipeline that generates, edits, and publishes QA articles to Medium. Includes dashboard, AI edit, hashtag generation, and automated portfolio sync.',
+    img: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&q=80',
+    flow: [
+      { step: '01', label: 'Topic seçilir veya girilir' },
+      { step: '02', label: 'Claude AI makale üretir' },
+      { step: '03', label: 'Dashboard\'da önizle & AI edit' },
+      { step: '04', label: 'Medium\'a kopyala & yayınla' },
+      { step: '05', label: 'Portfolio otomatik güncellenir' },
+    ],
     tech: ['Next.js', 'Claude AI', 'Prisma', 'SQLite', 'Tailwind'],
-    bg: 'linear-gradient(135deg,#0a0a1a,#1a0a3a)',
-    url: 'https://github.com/bluewave07/medium-bot',
   },
   {
     title: 'X Automation Bot',
     tag: 'AI · Social Media',
-    desc: 'Python bot that automates content creation and posting on X (Twitter). Generates QA-focused tweets, manages scheduling, and tracks engagement.',
-    tech: ['Python', 'X API', 'Claude AI', 'Automation'],
-    bg: 'linear-gradient(135deg,#0a0f1a,#0a1a2a)',
-    url: 'https://github.com/bluewave07/x-bot',
+    img: 'https://images.unsplash.com/photo-1611605698335-8b1569810432?w=800&q=80',
+    flow: [
+      { step: '01', label: 'Konu & içerik tipi belirlenir' },
+      { step: '02', label: 'Claude AI tweet üretir' },
+      { step: '03', label: 'Zamanlama ayarlanır' },
+      { step: '04', label: 'X API ile otomatik paylaşım' },
+      { step: '05', label: 'Etkileşim takip edilir' },
+    ],
+    tech: ['Python', 'X API v2', 'Claude AI', 'Scheduler'],
   },
 ]
 
@@ -122,34 +136,60 @@ function ArticleCard({ title, date, img, href, excerpt, isExternal }: {
 }
 
 function ProjectCard({ item }: { item: ProjectItem }) {
-  const inner = (
-    <div className="group" style={{ borderRadius: 20, overflow: 'hidden', background: '#1a1a1a', cursor: item.url ? 'pointer' : 'default' }}>
-      <div style={{ height: 200, background: item.bg, position: 'relative' }}>
-        <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center px-6"
-          style={{ background: 'linear-gradient(90.21deg, rgba(170,54,124,0.88) -5.91%, rgba(74,47,189,0.88) 111.58%)' }}>
-          <h4 className="text-white font-bold" style={{ fontSize: 18, marginBottom: 8 }}>{item.title}</h4>
-          <span className="text-white/80 italic" style={{ fontSize: 12, lineHeight: '1.5em' }}>{item.desc}</span>
-          {item.url && (
-            <span style={{ marginTop: 14, padding: '6px 20px', border: '1px solid rgba(255,255,255,0.7)', borderRadius: 50, color: '#fff', fontSize: 12, fontWeight: 600 }}>
-              View on GitHub →
-            </span>
-          )}
-        </div>
+  return (
+    <div className="group" style={{ borderRadius: 20, overflow: 'hidden', background: '#111', border: '1px solid rgba(255,255,255,0.07)' }}>
+      {/* Cover image */}
+      <div style={{ height: 180, position: 'relative', overflow: 'hidden' }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={item.img}
+          alt={item.title}
+          style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
+          className="group-hover:scale-105"
+        />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 60%)' }} />
+        {/* Tag badge */}
+        <span
+          style={{
+            position: 'absolute', top: 12, left: 14,
+            background: 'linear-gradient(90.21deg, rgba(170,54,124,0.85) -5.91%, rgba(74,47,189,0.85) 111.58%)',
+            color: '#fff', fontSize: 10, fontWeight: 700, padding: '3px 10px', borderRadius: 20,
+            letterSpacing: '0.5px',
+          }}
+        >
+          {item.tag}
+        </span>
       </div>
-      <div style={{ padding: '12px 16px 14px', background: '#161616' }}>
-        <p className="text-white font-semibold" style={{ fontSize: 13, marginBottom: 6 }}>{item.title}</p>
-        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+
+      {/* Content */}
+      <div style={{ padding: '16px 18px 18px', background: '#161616' }}>
+        <p className="text-white font-bold" style={{ fontSize: 15, marginBottom: 14 }}>{item.title}</p>
+
+        {/* Flow steps */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 7, marginBottom: 14 }}>
+          {item.flow.map((f) => (
+            <div key={f.step} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <span style={{
+                fontSize: 9, fontWeight: 700, color: '#aa367c',
+                background: 'rgba(170,54,124,0.15)', borderRadius: 6,
+                padding: '2px 6px', minWidth: 26, textAlign: 'center', letterSpacing: '0.3px',
+              }}>
+                {f.step}
+              </span>
+              <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.65)', lineHeight: '1.4em' }}>{f.label}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Tech stack */}
+        <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 12 }}>
           {item.tech.map((t) => (
-            <span key={t} style={{ fontSize: 10, color: 'rgba(255,255,255,0.45)', background: 'rgba(255,255,255,0.07)', borderRadius: 20, padding: '2px 8px' }}>{t}</span>
+            <span key={t} style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', background: 'rgba(255,255,255,0.06)', borderRadius: 20, padding: '2px 8px' }}>{t}</span>
           ))}
         </div>
       </div>
     </div>
   )
-
-  return item.url
-    ? <a href={item.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>{inner}</a>
-    : inner
 }
 
 export default function CloneProjects({ articles }: { articles: Article[] }) {
