@@ -1,16 +1,18 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import dynamic from 'next/dynamic';
+import { motion, useSpring } from 'framer-motion';
 
-const SolarSystem = dynamic(() => import('@/components/SolarSystem'), { ssr: false });
-const SplineScene = dynamic(() => import('@/components/ui/splite').then(m => ({ default: m.SplineScene })), { ssr: false });
+const SolarSystem = dynamic(() => import('@/components/SolarSystem'),                                           { ssr: false });
+const SplineScene = dynamic(() => import('@/components/ui/splite').then(m => ({ default: m.SplineScene })),    { ssr: false });
+const SpaceStars  = dynamic(() => import('@/components/ui/space-stars'),                                        { ssr: false });
 
 const ROLES = ['Blockchain Enthusiast', 'QA Engineer', 'Web Developer', 'Tech Explorer'];
 
 function useTypewriter(words: string[], speed = 90, pause = 1600) {
-  const [text, setText]     = useState('');
-  const [wIdx, setWIdx]     = useState(0);
-  const [cIdx, setCIdx]     = useState(0);
+  const [text, setText]         = useState('');
+  const [wIdx, setWIdx]         = useState(0);
+  const [cIdx, setCIdx]         = useState(0);
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
@@ -34,35 +36,86 @@ function useTypewriter(words: string[], speed = 90, pause = 1600) {
 }
 
 export default function Banner() {
-  const role = useTypewriter(ROLES);
+  const role      = useTypewriter(ROLES);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  const springCfg = { damping: 25, stiffness: 150, mass: 0.5 };
+  const mouseX = useSpring(0, springCfg);
+  const mouseY = useSpring(0, springCfg);
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    const rect = sectionRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    mouseX.set(e.clientX - rect.left);
+    mouseY.set(e.clientY - rect.top);
+  }, [mouseX, mouseY]);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    el.addEventListener('mousemove', handleMouseMove);
+    return () => el.removeEventListener('mousemove', handleMouseMove);
+  }, [handleMouseMove]);
 
   return (
     <section
+      ref={sectionRef}
       id="home"
       style={{ padding: '260px 0 100px', position: 'relative', overflow: 'hidden' }}
     >
-      {/* Spline 3D — full background, receives mouse events */}
-      <div className="absolute inset-0" style={{ zIndex: 0 }}>
+      {/* Layer 0 — deep space starfield */}
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
+        <SpaceStars />
+      </div>
+
+      {/* Layer 1 — Spline 3D robot, pushed to far right, screen-blend so black = transparent */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          top: 0, bottom: 0,
+          right: '-5%', width: '55%',
+          zIndex: 1,
+          mixBlendMode: 'screen',
+        }}
+      >
         <SplineScene
           scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
           className="w-full h-full"
         />
       </div>
 
-      {/* Solar system — on top, pointer-events none so mouse reaches Spline */}
-      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 1 }}>
+      {/* Layer 2 — solar system orbits */}
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 2 }}>
         <SolarSystem />
       </div>
 
-      <div
-        className="absolute inset-0 pointer-events-none"
+      {/* Layer 3 — mouse spotlight glow */}
+      <motion.div
+        className="absolute pointer-events-none"
         style={{
-          background: 'linear-gradient(90deg, rgba(18,18,18,0.92) 0%, rgba(18,18,18,0.55) 55%, rgba(18,18,18,0.05) 100%)',
-          zIndex: 2,
+          width: 520,
+          height: 520,
+          x: mouseX,
+          y: mouseY,
+          translateX: '-50%',
+          translateY: '-50%',
+          background: 'radial-gradient(circle, rgba(255,255,255,0.13) 0%, rgba(255,255,255,0.04) 40%, transparent 70%)',
+          filter: 'blur(6px)',
+          zIndex: 3,
         }}
       />
 
-      <div className="relative w-full px-6" style={{ zIndex: 3, maxWidth: 1140, margin: '0 auto' }}>
+      {/* Layer 4 — left-side fade so text stays readable */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'linear-gradient(90deg, rgba(2,2,14,0.88) 0%, rgba(2,2,14,0.5) 50%, rgba(2,2,14,0.05) 100%)',
+          zIndex: 4,
+        }}
+      />
+
+      {/* Layer 5 — text */}
+      <div className="relative w-full px-6" style={{ zIndex: 5, maxWidth: 1140, margin: '0 auto' }}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
             <div
