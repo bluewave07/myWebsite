@@ -59,16 +59,28 @@ interface ProjectItem {
   title: string
   tag: string
   desc: string
+  tech: string[]
   bg: string
+  url?: string
 }
 
 const PROJECTS: ProjectItem[] = [
-  { title: 'Test Automation Framework', tag: 'QA',         desc: 'End-to-end test automation suite',     bg: 'linear-gradient(135deg,#0a1a0a,#1a4a1a)' },
-  { title: 'QA Dashboard App',          tag: 'Full Stack', desc: 'Real-time QA metrics dashboard',       bg: 'linear-gradient(135deg,#1a0a0a,#4a1a2a)' },
-  { title: 'Blockchain Voting System',  tag: 'Blockchain', desc: 'Decentralized on-chain voting',        bg: 'linear-gradient(135deg,#0a0a1a,#2a1a5a)' },
-  { title: 'API Testing Suite',         tag: 'API',        desc: 'Postman + Newman CI pipeline',         bg: 'linear-gradient(135deg,#1a1a0a,#3a3a0a)' },
-  { title: 'Performance Monitor Tool',  tag: 'Monitoring', desc: 'Load testing & metrics collector',     bg: 'linear-gradient(135deg,#0a1a1a,#0a3a3a)' },
-  { title: 'CI/CD Pipeline Builder',    tag: 'DevOps',     desc: 'GitHub Actions + Docker deploy',       bg: 'linear-gradient(135deg,#1a0a1a,#3a0a3a)' },
+  {
+    title: 'Medium Bot',
+    tag: 'AI · Automation',
+    desc: 'AI-powered content pipeline that generates, edits, and publishes QA articles to Medium. Includes dashboard, AI edit, hashtag generation, and automated portfolio sync.',
+    tech: ['Next.js', 'Claude AI', 'Prisma', 'SQLite', 'Tailwind'],
+    bg: 'linear-gradient(135deg,#0a0a1a,#1a0a3a)',
+    url: 'https://github.com/bluewave07/medium-bot',
+  },
+  {
+    title: 'X Automation Bot',
+    tag: 'AI · Social Media',
+    desc: 'Python bot that automates content creation and posting on X (Twitter). Generates QA-focused tweets, manages scheduling, and tracks engagement.',
+    tech: ['Python', 'X API', 'Claude AI', 'Automation'],
+    bg: 'linear-gradient(135deg,#0a0f1a,#0a1a2a)',
+    url: 'https://github.com/bluewave07/x-bot',
+  },
 ]
 
 function ArticleCard({ title, date, img, href, excerpt, isExternal }: {
@@ -110,21 +122,34 @@ function ArticleCard({ title, date, img, href, excerpt, isExternal }: {
 }
 
 function ProjectCard({ item }: { item: ProjectItem }) {
-  return (
-    <div className="group" style={{ borderRadius: 20, overflow: 'hidden', background: '#1a1a1a' }}>
+  const inner = (
+    <div className="group" style={{ borderRadius: 20, overflow: 'hidden', background: '#1a1a1a', cursor: item.url ? 'pointer' : 'default' }}>
       <div style={{ height: 200, background: item.bg, position: 'relative' }}>
-        <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center px-5"
+        <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center px-6"
           style={{ background: 'linear-gradient(90.21deg, rgba(170,54,124,0.88) -5.91%, rgba(74,47,189,0.88) 111.58%)' }}>
           <h4 className="text-white font-bold" style={{ fontSize: 18, marginBottom: 8 }}>{item.title}</h4>
-          <span className="text-white/80 italic" style={{ fontSize: 12 }}>{item.desc}</span>
+          <span className="text-white/80 italic" style={{ fontSize: 12, lineHeight: '1.5em' }}>{item.desc}</span>
+          {item.url && (
+            <span style={{ marginTop: 14, padding: '6px 20px', border: '1px solid rgba(255,255,255,0.7)', borderRadius: 50, color: '#fff', fontSize: 12, fontWeight: 600 }}>
+              View on GitHub →
+            </span>
+          )}
         </div>
       </div>
       <div style={{ padding: '12px 16px 14px', background: '#161616' }}>
-        <p className="text-white font-semibold" style={{ fontSize: 13, marginBottom: 4 }}>{item.title}</p>
-        <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: 11 }}>{item.tag}</span>
+        <p className="text-white font-semibold" style={{ fontSize: 13, marginBottom: 6 }}>{item.title}</p>
+        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+          {item.tech.map((t) => (
+            <span key={t} style={{ fontSize: 10, color: 'rgba(255,255,255,0.45)', background: 'rgba(255,255,255,0.07)', borderRadius: 20, padding: '2px 8px' }}>{t}</span>
+          ))}
+        </div>
       </div>
     </div>
   )
+
+  return item.url
+    ? <a href={item.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>{inner}</a>
+    : inner
 }
 
 export default function CloneProjects({ articles }: { articles: Article[] }) {
