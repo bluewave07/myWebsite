@@ -133,14 +133,14 @@ export default function CloneProjects({ articles }: { articles: Article[] }) {
   const articleCards = tab !== 'projects'
     ? [
         ...articles
-          .filter((a) => a.category === tab)
+          .filter((a) => a.category === tab && a.mediumUrl)
           .map((a) => ({
             title: a.title,
             date: new Date(a.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
             img: a.imageUrl ?? CATEGORY_FALLBACK_IMAGES[a.category] ?? '',
-            href: `/blog/${a.slug}`,
+            href: a.mediumUrl!,
             excerpt: a.excerpt,
-            isExternal: false,
+            isExternal: true,
           })),
         ...LEGACY
           .filter((l) => l.category === tab)
@@ -192,11 +192,13 @@ export default function CloneProjects({ articles }: { articles: Article[] }) {
 
         <div className="text-center" style={{ marginTop: 48 }}>
           <a
-            href="/blog"
+            href="https://medium.com/@abdulkadirakyurt.de"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-block text-white font-medium tracking-[0.8px] hover:opacity-90 transition-opacity"
             style={{ background: 'linear-gradient(90.21deg, #aa367c -5.91%, #4a2fbd 111.58%)', borderRadius: 50, padding: '13px 38px', fontSize: 16, textDecoration: 'none' }}
           >
-            View all articles →
+            Read more on Medium →
           </a>
         </div>
       </div>

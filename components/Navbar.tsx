@@ -31,7 +31,7 @@ export default function Navbar() {
           {['Home','Skills'].map(l => (
             <a key={l} href={`#${l.toLowerCase()}`} className="text-white/80 hover:text-white text-[14px] font-medium tracking-[0.8px] transition-colors duration-300">{l}</a>
           ))}
-          <a href="/#articles" className="text-white/80 hover:text-white text-[14px] font-medium tracking-[0.8px] transition-colors duration-300">Articles</a>
+          <a href="#articles" className="text-white/80 hover:text-white text-[14px] font-medium tracking-[0.8px] transition-colors duration-300">Articles</a>
         </div>
 
         <div className="hidden md:flex items-center gap-3">
@@ -64,7 +64,7 @@ export default function Navbar() {
           {['Home','Skills'].map(l => (
             <a key={l} href={`#${l.toLowerCase()}`} className="text-white/80 text-sm" onClick={() => setOpen(false)}>{l}</a>
           ))}
-          <a href="/#articles" className="text-white/80 text-sm" onClick={() => setOpen(false)}>Articles</a>
+          <a href="#articles" className="text-white/80 text-sm" onClick={() => setOpen(false)}>Articles</a>
           <a href="#contact" className="text-white/80 text-sm" onClick={() => setOpen(false)}>Let&apos;s Connect</a>
         </div>
       )}
