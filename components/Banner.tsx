@@ -1,12 +1,10 @@
 'use client';
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { Spotlight } from '@/components/ui/spotlight';
 
-const SplineScene = dynamic(
-  () => import('@/components/ui/splite').then(m => ({ default: m.SplineScene })),
-  { ssr: false }
-);
+const SolarSystem = dynamic(() => import('@/components/SolarSystem'),                                        { ssr: false });
+const SplineScene = dynamic(() => import('@/components/ui/splite').then(m => ({ default: m.SplineScene })), { ssr: false });
+const SpaceStars  = dynamic(() => import('@/components/ui/space-stars'),                                     { ssr: false });
 
 const ROLES = ['Blockchain Enthusiast', 'QA Engineer', 'Web Developer', 'Tech Explorer'];
 
@@ -42,85 +40,105 @@ export default function Banner() {
   return (
     <section
       id="home"
-      className="relative overflow-hidden"
-      style={{ background: 'rgb(2, 2, 10)', minHeight: '100vh' }}
+      style={{ padding: '260px 0 100px', position: 'relative', overflow: 'hidden' }}
     >
-      {/* Aceternity spotlight beam — animates in from upper-left */}
-      <Spotlight
-        className="-top-40 left-0 md:left-60 md:-top-20"
-        fill="white"
+      {/* Layer 0 — deep space starfield */}
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
+        <SpaceStars />
+      </div>
+
+      {/* Layer 1 — Spline robot (right side, screen blend so black = transparent, mouse events active) */}
+      <div
+        className="absolute hidden md:block"
+        style={{
+          top: 0, bottom: 0,
+          right: '-5%', width: '55%',
+          zIndex: 1,
+          mixBlendMode: 'screen',
+        }}
+      >
+        <SplineScene
+          scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+          className="w-full h-full"
+        />
+      </div>
+
+      {/* Layer 2 — solar system orbits */}
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 2 }}>
+        <SolarSystem />
+      </div>
+
+      {/* Layer 3 — left fade so text stays readable */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'linear-gradient(90deg, rgba(2,2,14,0.90) 0%, rgba(2,2,14,0.55) 50%, rgba(2,2,14,0.05) 100%)',
+          zIndex: 3,
+        }}
       />
 
-      <div className="flex h-full min-h-screen">
-        {/* Left — portfolio content */}
-        <div
-          className="flex-1 flex flex-col justify-center relative z-10"
-          style={{ padding: '120px 48px 80px' }}
-        >
-          <div
-            className="inline-block font-bold tracking-[0.8px] mb-6"
-            style={{
-              background: 'linear-gradient(90.21deg, rgba(170,54,124,.5) -5.91%, rgba(74,47,189,.5) 111.58%)',
-              border: '1px solid rgba(255,255,255,0.5)',
-              fontSize: 18,
-              padding: '7px 10px',
-              width: 'fit-content',
-            }}
-          >
-            Welcome to my Portfolio
+      {/* Layer 4 — text */}
+      <div className="relative w-full px-6 pointer-events-none" style={{ zIndex: 4, maxWidth: 1140, margin: '0 auto' }}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <div
+              className="inline-block font-bold tracking-[0.8px] mb-4"
+              style={{
+                background: 'linear-gradient(90.21deg, rgba(170,54,124,.5) -5.91%, rgba(74,47,189,.5) 111.58%)',
+                border: '1px solid rgba(255,255,255,0.5)',
+                fontSize: 20,
+                padding: '8px 10px',
+              }}
+            >
+              Welcome to my Portfolio
+            </div>
+
+            <h1
+              className="text-white font-bold"
+              style={{ fontSize: 65, lineHeight: 1, letterSpacing: '0.8px', marginBottom: 20, display: 'block' }}
+            >
+              Hi! I&apos;m Abdulkadir
+            </h1>
+
+            <h2
+              className="font-bold"
+              style={{
+                fontSize: 'clamp(30px, 3.5vw, 45px)',
+                letterSpacing: '0.8px',
+                lineHeight: 1.2,
+                minHeight: '1.3em',
+                background: 'linear-gradient(90.21deg, #aa367c -5.91%, #4a2fbd 111.58%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                marginBottom: 20,
+              }}
+            >
+              {role}
+              <span className="cursor-blink" style={{ WebkitTextFillColor: 'white', color: 'white' }}>|</span>
+            </h2>
+
+            <p style={{ color: '#b8b8b8', fontSize: 18, letterSpacing: '0.8px', lineHeight: '1.5em', width: '96%' }}>
+              ISTQB Certified Quality Engineer. Enjoy learning new technologies and challenging concepts.
+            </p>
+
+            <a
+              href="#contact"
+              className="inline-flex items-center text-white font-bold group"
+              style={{ fontSize: 20, letterSpacing: '0.8px', marginTop: 60, pointerEvents: 'auto' }}
+            >
+              Let&apos;s Connect
+              <svg
+                className="group-hover:ml-6 transition-all duration-300"
+                style={{ marginLeft: 10 }}
+                width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
           </div>
 
-          <h1
-            className="text-white font-bold"
-            style={{ fontSize: 'clamp(40px, 5vw, 65px)', lineHeight: 1.05, letterSpacing: '0.8px', marginBottom: 20 }}
-          >
-            Hi! I&apos;m Abdulkadir
-          </h1>
-
-          <h2
-            className="font-bold"
-            style={{
-              fontSize: 'clamp(26px, 3vw, 42px)',
-              letterSpacing: '0.8px',
-              lineHeight: 1.2,
-              minHeight: '1.3em',
-              background: 'linear-gradient(90.21deg, #aa367c -5.91%, #4a2fbd 111.58%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              marginBottom: 20,
-            }}
-          >
-            {role}
-            <span className="cursor-blink" style={{ WebkitTextFillColor: 'white', color: 'white' }}>|</span>
-          </h2>
-
-          <p style={{ color: '#b8b8b8', fontSize: 18, letterSpacing: '0.8px', lineHeight: '1.5em', maxWidth: 480, marginBottom: 48 }}>
-            ISTQB Certified Quality Engineer. Enjoy learning new technologies and challenging concepts.
-          </p>
-
-          <a
-            href="#contact"
-            className="inline-flex items-center text-white font-bold group"
-            style={{ fontSize: 20, letterSpacing: '0.8px', width: 'fit-content' }}
-          >
-            Let&apos;s Connect
-            <svg
-              className="group-hover:ml-6 transition-all duration-300"
-              style={{ marginLeft: 10 }}
-              width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
-            >
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </a>
-        </div>
-
-        {/* Right — Spline robot */}
-        <div className="flex-1 relative hidden md:block">
-          <SplineScene
-            scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-            className="w-full h-full"
-          />
+          <div className="hidden lg:block" />
         </div>
       </div>
     </section>
