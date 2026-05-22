@@ -1,6 +1,9 @@
 'use client'
 import { useState } from 'react'
+import Link from 'next/link'
 import type { Article } from '@/lib/articles'
+import { getAllProjects } from '@/lib/projects'
+import type { ProjectData } from '@/lib/projects'
 
 type Tab = 'qa-automation' | 'frameworks' | 'industry-news' | 'best-practices' | 'projects'
 
@@ -55,47 +58,7 @@ const LEGACY: Array<{ title: string; date: string; img: string; url: string; exc
   },
 ]
 
-interface FlowStep {
-  step: string
-  label: string
-}
-
-interface ProjectItem {
-  title: string
-  tag: string
-  img: string
-  flow: FlowStep[]
-  tech: string[]
-}
-
-const PROJECTS: ProjectItem[] = [
-  {
-    title: 'Medium Bot',
-    tag: 'AI · Automation',
-    img: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&q=80',
-    flow: [
-      { step: '01', label: 'Topic seçilir veya girilir' },
-      { step: '02', label: 'Claude AI makale üretir' },
-      { step: '03', label: 'Dashboard\'da önizle & AI edit' },
-      { step: '04', label: 'Medium\'a kopyala & yayınla' },
-      { step: '05', label: 'Portfolio otomatik güncellenir' },
-    ],
-    tech: ['Next.js', 'Claude AI', 'Prisma', 'SQLite', 'Tailwind'],
-  },
-  {
-    title: 'X Automation Bot',
-    tag: 'AI · Social Media',
-    img: 'https://images.unsplash.com/photo-1611605698335-8b1569810432?w=800&q=80',
-    flow: [
-      { step: '01', label: 'Konu & içerik tipi belirlenir' },
-      { step: '02', label: 'Claude AI tweet üretir' },
-      { step: '03', label: 'Zamanlama ayarlanır' },
-      { step: '04', label: 'X API ile otomatik paylaşım' },
-      { step: '05', label: 'Etkileşim takip edilir' },
-    ],
-    tech: ['Python', 'X API v2', 'Claude AI', 'Scheduler'],
-  },
-]
+const PROJECTS: ProjectData[] = getAllProjects()
 
 function ArticleCard({ title, date, img, href, excerpt, isExternal }: {
   title: string; date: string; img: string; href: string; excerpt: string; isExternal: boolean
@@ -135,9 +98,10 @@ function ArticleCard({ title, date, img, href, excerpt, isExternal }: {
   )
 }
 
-function ProjectCard({ item }: { item: ProjectItem }) {
+function ProjectCard({ item }: { item: ProjectData }) {
   return (
-    <div className="group" style={{ borderRadius: 20, overflow: 'hidden', background: '#111', border: '1px solid rgba(255,255,255,0.07)' }}>
+    <Link href={`/projects/${item.slug}`} style={{ textDecoration: 'none' }}>
+    <div className="group" style={{ borderRadius: 20, overflow: 'hidden', background: '#111', border: '1px solid rgba(255,255,255,0.07)', cursor: 'pointer' }}>
       {/* Cover image */}
       <div style={{ height: 180, position: 'relative', overflow: 'hidden' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -187,8 +151,10 @@ function ProjectCard({ item }: { item: ProjectItem }) {
             <span key={t} style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', background: 'rgba(255,255,255,0.06)', borderRadius: 20, padding: '2px 8px' }}>{t}</span>
           ))}
         </div>
+        <div style={{ marginTop: 12, fontSize: 11, color: '#aa367c', fontWeight: 600, letterSpacing: '0.3px' }}>View details →</div>
       </div>
     </div>
+    </Link>
   )
 }
 
