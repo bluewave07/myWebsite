@@ -28,9 +28,10 @@ export default function Navbar() {
         </a>
 
         <div className="hidden md:flex items-center gap-8">
-          {['Home','Skills','Articles'].map(l => (
+          {['Home','Skills'].map(l => (
             <a key={l} href={`#${l.toLowerCase()}`} className="text-white/80 hover:text-white text-[14px] font-medium tracking-[0.8px] transition-colors duration-300">{l}</a>
           ))}
+          <a href="/blog" className="text-white/80 hover:text-white text-[14px] font-medium tracking-[0.8px] transition-colors duration-300">Blog</a>
         </div>
 
         <div className="hidden md:flex items-center gap-3">
@@ -60,9 +61,10 @@ export default function Navbar() {
 
       {open && (
         <div className="md:hidden px-6 pb-4 flex flex-col gap-4 bg-[#121212]/95">
-          {['Home','Skills','Articles'].map(l => (
+          {['Home','Skills'].map(l => (
             <a key={l} href={`#${l.toLowerCase()}`} className="text-white/80 text-sm" onClick={() => setOpen(false)}>{l}</a>
           ))}
+          <a href="/blog" className="text-white/80 text-sm" onClick={() => setOpen(false)}>Blog</a>
           <a href="#contact" className="text-white/80 text-sm" onClick={() => setOpen(false)}>Let&apos;s Connect</a>
         </div>
       )}
