@@ -36,6 +36,14 @@ function useTypewriter(words: string[], speed = 90, pause = 1600) {
 
 export default function Banner() {
   const role = useTypewriter(ROLES);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsDesktop(window.innerWidth >= 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   return (
     <section
@@ -47,21 +55,23 @@ export default function Banner() {
         <SpaceStars />
       </div>
 
-      {/* Layer 1 — Spline robot (right side, screen blend so black = transparent, mouse events active) */}
-      <div
-        className="absolute hidden md:block"
-        style={{
-          top: 0, bottom: 0,
-          right: '-5%', width: '55%',
-          zIndex: 1,
-          mixBlendMode: 'screen',
-        }}
-      >
-        <SplineScene
-          scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-          className="w-full h-full"
-        />
-      </div>
+      {/* Layer 1 — Spline robot (desktop only — unmounted on mobile to prevent touch-event blocking) */}
+      {isDesktop && (
+        <div
+          className="absolute"
+          style={{
+            top: 0, bottom: 0,
+            right: '-5%', width: '55%',
+            zIndex: 1,
+            mixBlendMode: 'screen',
+          }}
+        >
+          <SplineScene
+            scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+            className="w-full h-full"
+          />
+        </div>
+      )}
 
       {/* Layer 2 — solar system orbits */}
       <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 2 }}>
