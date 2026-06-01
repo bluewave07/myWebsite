@@ -153,17 +153,15 @@ const Component = React.forwardRef<HTMLDivElement, MouseSparklesProps>(
     );
 
     React.useEffect(() => {
+      if ('ontouchstart' in window) return; // disable on touch/mobile devices
+
       window.addEventListener("mousemove", handleOnMove);
-      window.addEventListener("touchmove", (e) => handleOnMove(e.touches[0]));
       document.body.addEventListener("mouseleave", () => {
         lastRef.current.mousePosition = { x: 0, y: 0 };
       });
 
       return () => {
         window.removeEventListener("mousemove", handleOnMove);
-        window.removeEventListener("touchmove", (e) =>
-          handleOnMove(e.touches[0]),
-        );
         document.body.removeEventListener("mouseleave", () => {
           lastRef.current.mousePosition = { x: 0, y: 0 };
         });
