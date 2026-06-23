@@ -188,6 +188,7 @@ image: "/images/team/ad-soyad.jpg"
 | Deployment | Netlify (static export) |
 | Font | Inter (Google Fonts) |
 | İkonlar | Lucide React |
+| **Kod dili** | **İngilizce** — değişken adları, fonksiyon adları, component adları, yorumlar hepsi İngilizce. Yalnızca kullanıcıya gösterilen UI metinleri Almanca. |
 
 ---
 
