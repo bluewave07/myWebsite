@@ -82,7 +82,6 @@ function ArticleCard({ title, date, img, href, excerpt, isExternal }: {
           style={{ height: 0, background: 'linear-gradient(90.21deg, rgba(170,54,124,0.88) -5.91%, rgba(74,47,189,0.88) 111.58%)' }}
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center px-5" style={{ transitionDelay: '0.06s' }}>
-          <h4 className="text-white font-bold" style={{ fontSize: 18, lineHeight: '1.25em', marginBottom: 8 }}>{title}</h4>
           <span className="text-white/80 italic" style={{ fontSize: 12 }}>{excerpt}</span>
           <span style={{ marginTop: 14, padding: '6px 20px', border: '1px solid rgba(255,255,255,0.7)', borderRadius: 50, color: '#fff', fontSize: 12, fontWeight: 600 }}>
             {isExternal ? 'Read on Medium →' : 'Read article →'}
