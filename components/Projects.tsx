@@ -5,10 +5,11 @@ import type { Article } from '@/lib/articles'
 import { getAllProjects } from '@/lib/projects'
 import type { ProjectData } from '@/lib/projects'
 
-type Tab = 'qa-automation' | 'frameworks' | 'industry-news' | 'best-practices' | 'projects'
+type Tab = 'qa-automation' | 'frameworks' | 'industry-news' | 'best-practices' | 'ai-testing' | 'projects'
 
 const TABS: { value: Tab; label: string }[] = [
   { value: 'qa-automation',  label: 'QA Automation' },
+  { value: 'ai-testing',     label: 'AI in Testing' },
   { value: 'frameworks',     label: 'Frameworks' },
   { value: 'industry-news',  label: 'Industry News' },
   { value: 'best-practices', label: 'Best Practices' },
@@ -20,6 +21,7 @@ const CATEGORY_FALLBACK_IMAGES: Record<string, string> = {
   'frameworks':     'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80',
   'industry-news':  'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80',
   'best-practices': 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&q=80',
+  'ai-testing':     'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&q=80',
 }
 
 // Legacy Medium articles
@@ -164,14 +166,14 @@ export default function CloneProjects({ articles }: { articles: Article[] }) {
   const articleCards = tab !== 'projects'
     ? [
         ...articles
-          .filter((a) => a.category === tab && a.mediumUrl)
+          .filter((a) => a.category === tab)
           .map((a) => ({
             title: a.title,
             date: new Date(a.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
             img: a.imageUrl ?? CATEGORY_FALLBACK_IMAGES[a.category] ?? '',
-            href: a.mediumUrl!,
+            href: a.mediumUrl ? a.mediumUrl : `/articles/${a.slug}`,
             excerpt: a.excerpt,
-            isExternal: true,
+            isExternal: Boolean(a.mediumUrl),
           })),
         ...LEGACY
           .filter((l) => l.category === tab)
