@@ -104,9 +104,12 @@ const Component = React.forwardRef<HTMLDivElement, MouseSparklesProps>(
     const createGlow = React.useCallback(
       (last: Point, current: Point) => {
         const distance = calcDistance(last, current);
-        const quantity = Math.max(
-          Math.floor(distance / configRef.current.maximumGlowPointSpacing),
-          1,
+        const quantity = Math.min(
+          Math.max(
+            Math.floor(distance / configRef.current.maximumGlowPointSpacing),
+            1,
+          ),
+          12,
         );
 
         const dx = (current.x - last.x) / quantity;
@@ -155,16 +158,32 @@ const Component = React.forwardRef<HTMLDivElement, MouseSparklesProps>(
     React.useEffect(() => {
       if ('ontouchstart' in window) return; // disable on touch/mobile devices
 
-      window.addEventListener("mousemove", handleOnMove);
-      document.body.addEventListener("mouseleave", () => {
+      // Collapse rapid native mousemove events to at most one processed
+      // update per animation frame, so fast swipes can't flood the DOM
+      // with glow/star elements and crash the tab.
+      let rafId: number | null = null;
+      let pendingEvent: { clientX: number; clientY: number } | null = null;
+
+      const onMouseMove = (e: MouseEvent) => {
+        pendingEvent = e;
+        if (rafId !== null) return;
+        rafId = requestAnimationFrame(() => {
+          rafId = null;
+          if (pendingEvent) handleOnMove(pendingEvent);
+        });
+      };
+
+      const onMouseLeave = () => {
         lastRef.current.mousePosition = { x: 0, y: 0 };
-      });
+      };
+
+      window.addEventListener("mousemove", onMouseMove);
+      document.body.addEventListener("mouseleave", onMouseLeave);
 
       return () => {
-        window.removeEventListener("mousemove", handleOnMove);
-        document.body.removeEventListener("mouseleave", () => {
-          lastRef.current.mousePosition = { x: 0, y: 0 };
-        });
+        if (rafId !== null) cancelAnimationFrame(rafId);
+        window.removeEventListener("mousemove", onMouseMove);
+        document.body.removeEventListener("mouseleave", onMouseLeave);
       };
     }, [handleOnMove]);
 
