@@ -13,4 +13,4 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https://images.unsplash.com https://cdn-images-1.medium.com; connect-src 'self' https://prod.spline.design https://formspree.io; worker-src 'self' blob:; frame-src 'none'"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https://images.unsplash.com https://cdn-images-1.medium.com; connect-src 'self' https://prod.spline.design https://formspree.io https://unpkg.com; worker-src 'self' blob:; frame-src 'none'"
