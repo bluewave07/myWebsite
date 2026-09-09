@@ -76,17 +76,6 @@ function ArticleCard({ title, date, img, href, excerpt, isExternal }: {
       <div style={{ height: 200, position: 'relative', overflow: 'hidden' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={img} alt={title} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }} className="group-hover:scale-105" />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 55%)' }} />
-        <div
-          className="absolute bottom-0 left-0 right-0 group-hover:h-full transition-all duration-500"
-          style={{ height: 0, background: 'linear-gradient(90.21deg, rgba(170,54,124,0.88) -5.91%, rgba(74,47,189,0.88) 111.58%)' }}
-        />
-        <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center px-5" style={{ transitionDelay: '0.06s' }}>
-          <span className="text-white/80 italic" style={{ fontSize: 12 }}>{excerpt}</span>
-          <span style={{ marginTop: 14, padding: '6px 20px', border: '1px solid rgba(255,255,255,0.7)', borderRadius: 50, color: '#fff', fontSize: 12, fontWeight: 600 }}>
-            {isExternal ? 'Read on Medium →' : 'Read article →'}
-          </span>
-        </div>
       </div>
       <div style={{ padding: '12px 16px 14px', background: '#161616' }}>
         <p className="text-white font-semibold" style={{ fontSize: 13, lineHeight: '1.3em', marginBottom: 4 }}>{title}</p>
