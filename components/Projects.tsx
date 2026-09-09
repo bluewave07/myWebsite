@@ -5,11 +5,12 @@ import type { Article } from '@/lib/articles'
 import { getAllProjects } from '@/lib/projects'
 import type { ProjectData } from '@/lib/projects'
 
-type Tab = 'qa-automation' | 'frameworks' | 'industry-news' | 'best-practices' | 'ai-testing' | 'projects'
+type Tab = 'qa-automation' | 'frameworks' | 'industry-news' | 'best-practices' | 'ai-testing' | 'ai-fundamentals' | 'projects'
 
 const TABS: { value: Tab; label: string }[] = [
   { value: 'qa-automation',  label: 'QA Automation' },
   { value: 'ai-testing',     label: 'AI in Testing' },
+  { value: 'ai-fundamentals', label: 'AI Fundamentals' },
   { value: 'frameworks',     label: 'Frameworks' },
   { value: 'industry-news',  label: 'Industry News' },
   { value: 'best-practices', label: 'Best Practices' },
@@ -22,6 +23,7 @@ const CATEGORY_FALLBACK_IMAGES: Record<string, string> = {
   'industry-news':  'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80',
   'best-practices': 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&q=80',
   'ai-testing':     'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&q=80',
+  'ai-fundamentals': 'https://images.unsplash.com/photo-1655720828018-edd2daec9349?w=800&q=80',
 }
 
 // Legacy Medium articles

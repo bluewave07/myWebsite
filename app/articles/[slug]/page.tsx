@@ -9,6 +9,7 @@ const CATEGORY_LABELS: Record<string, string> = {
   'industry-news':  'Industry News',
   'best-practices': 'Best Practices',
   'ai-testing':     'AI in Testing',
+  'ai-fundamentals': 'AI Fundamentals',
 }
 
 export function generateStaticParams() {
