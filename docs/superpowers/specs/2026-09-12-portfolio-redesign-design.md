@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-12
 **Author:** Abdulkadir Akyurt (with Claude)
-**Status:** Draft — pending user review
+**Status:** Approved
 
 ---
 
@@ -85,29 +85,33 @@ Short, grouped list (not an icon grid): e.g. **Test Automation**
 Netlify, DNS/deployment). Each item: a one-line description, no filler.
 
 ### 3. Selected Work
-2–3 case-study cards, each structured as **Problem → What was built → Stack
-→ Outcome**, using only verifiable, qualitative outcome language (no
-invented metrics):
+Case-study cards, each structured as **Problem → What was built → Stack →
+Outcome**, using only verifiable, qualitative outcome language (no invented
+metrics):
 
 - **Medium Bot** — an AI content pipeline that researches topics live,
   writes articles, and publishes them straight to this site.
 - **X Automation Bot** — scheduled AI-drafted posting to X via the API.
-- **Donau Schüler Eltern e.V. website** *(proposed addition — confirm in
-  review)* — a real client project: migrated a nonprofit association's site
-  to a modern Next.js stack with a custom domain, HTTPS, and hardened
-  security headers. Demonstrates client-facing, full-stack delivery beyond
-  personal tooling.
+
+Just these two for now. More are coming (YouTube, Instagram, and a mobile
+app project are planned) — the section is built to make adding a new card
+trivial (append to `lib/projects.ts`), not to hit a fixed count today.
 
 Each card links to its existing `/projects/[slug]` detail page (restyled to
 match, not rebuilt).
 
 ### 4. Writing
 A curated preview of the 3 most recent articles (pulled from the existing
-`getAllArticles()`), not the current full category-tabbed wall. A single
-"See all articles" link goes to a (new, simple) `/articles` index page —
-today there is no such index; articles are only reachable via the homepage
-tabs or direct link, which won't exist anymore once the tabs are gone. This
-index page is a small necessary addition, not a redesign of article data.
+`getAllArticles()`), not the current full category-tabbed wall. Sourced
+across *all* existing categories — this is deliberately not limited to
+tutorial-style posts: the `industry-news` category (commentary on current
+IT/tech happenings) is exactly what makes this a personal-page-plus-current-
+publications mix, not just a how-to blog, so it stays mixed into the same
+preview rather than being split out. A single "See all articles" link goes
+to a (new, simple) `/articles` index page — today there is no such index;
+articles are only reachable via the homepage tabs or direct link, which
+won't exist anymore once the tabs are gone. This index page is a small
+necessary addition, not a redesign of article data.
 
 ### 5. Contact
 Keep the existing Formspree-backed form. Drop the hardcoded `LEGACY` Medium
@@ -145,13 +149,15 @@ today, restyled to match.
 - `app/articles/page.tsx` — simple index listing all articles (needed once
   the homepage no longer exposes the full list via tabs)
 
-## Content Needed From User (surfaced during spec review)
+## Resolved During Spec Review
 
-1. Approve or edit the one-line positioning statement above.
-2. Confirm whether to include the Donau e.V. site as a third case study.
-3. Any real, specific outcome the user wants stated for medium-bot/x-bot
-   (otherwise the case studies stay qualitative — what was built and why —
-   with no invented numbers).
+1. Positioning statement: **approved as drafted**, no edits.
+2. Donau e.V. as a third case study: **rejected** — out of scope for this
+   site. Future case studies will be real, original, more attention-getting
+   projects the user is starting soon (YouTube, Instagram, a mobile app);
+   those get added to Selected Work once they exist, not now.
+3. Specific outcome numbers for medium-bot/x-bot: **rejected** — case
+   studies stay qualitative, no invented metrics.
 
 ## Testing / Verification
 
